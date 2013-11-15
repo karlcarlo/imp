@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    <p>Welcome to {{ title }}</p>
+
+    <script type="text/javascript" src="/javascripts/lib/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+.project
+.settings
+build
+*.class
+*.pyc
+*.pyo
+.svn
+_svn
+.project
+node_modules/
+*.swp
+docs/js/lib/almond/
+npm-debug.log
+*.db
+temp/
+*.orig
+.DS_Store
