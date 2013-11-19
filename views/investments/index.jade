@@ -1,0 +1,83 @@
+extends ../layouts/layout_full
+
+block content
+
+  .breadcrumb
+    li
+      a(href='/') 首页
+    li.active
+      | 投资
+
+  include ../includes/messages
+
+  .row
+    .pull-right
+      - if(locals.member)
+        a(href='/investments/new').btn.btn-info 添加新投资
+
+  .row
+    #ganttChart
+    br
+    br
+    #eventMessage
+
+  include ../includes/scripts
+  link(rel="stylesheet", href="/javascripts/lib/jquery-ui-1.8.4.css")
+  link(rel="stylesheet", href="/javascripts/app/gantt/jquery.ganttView.css")
+  script(src="/javascripts/lib/date.js")
+  script(src="/javascripts/lib/jquery-ui-1.8.4.js")
+  script(src="/javascripts/app/gantt/gantt.js")
+  script.
+    $(function () {
+
+      $.getJSON('/investments.json', function(json){
+
+        if(!json || !json.success || !json.data || !json.data.length) return;
+
+        var investData = [];
+
+        json.data.forEach(function(obj, i){
+          var tmp = {
+            id: obj._id,
+            name: obj.title,
+            start: new Date(obj.started_at).toYMD(),
+            end: new Date(obj.ended_at).toYMD(),
+            type: obj.repayment_type,
+            rate: obj.rate,
+            rate_type: obj.rate_type,
+            amount: obj.amount,
+            periods: obj.periods,
+            period_type: obj.period_type,
+            color: '',
+            borrower: obj.borrower
+          };
+          investData.push(tmp);
+        });
+
+        console.log(investData);
+
+        $("#ganttChart").ganttGrid({ 
+          data: investData,
+          slideWidth: 900,
+          behavior: {
+            onClick: function (data) { 
+              var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+              $("#eventMessage").text(msg);
+            },
+            onResize: function (data) { 
+              var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+              $("#eventMessage").text(msg);
+            },
+            onDrag: function (data) { 
+              var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+              $("#eventMessage").text(msg);
+            }
+          }
+        });
+
+
+      })
+
+      
+      // $("#ganttChart").ganttView("setSlideWidth", 600);
+    });

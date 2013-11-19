@@ -1,0 +1,22 @@
+- while(Array.isArray(messages) && messages.length)
+  - var message = messages.pop();
+  - if(message.type == 'alert')
+    .alert
+      button(data-dismiss='alert').close x
+      = message.content
+  - if(message.type == 'info')
+    .alert.alert-info
+      button(data-dismiss='alert').close x
+      = message.content
+  - if(message.type == 'danger')
+    .alert.alert-danger
+      button(data-dismiss='alert', aria-hidden='true').close x
+      = message.content
+  - if(message.type == 'success')
+    .alert.alert-success
+      button(data-dismiss='alert').close x
+      = message.content
+  - if(message.type == 'warning')
+    .alert.alert-warning
+      button(data-dismiss='alert').close x
+      = message.content

@@ -1,0 +1,51 @@
+extends ../layouts/layout
+
+block content
+
+  .breadcrumb
+    li
+      a(href='/') 首页
+    li.active
+      | 投资
+
+  include ../includes/messages
+
+  .row-fluid
+    .pull-right
+      - if(locals.member)
+        a(href='/investments/new').btn.btn-info 添加新投资
+
+  - each investment in investments
+    .row.list-item
+      .title.clearfix
+        h2
+          a(href='/investments/#{investment._id}')
+            span.date= investment.timestamp.month + '/' + investment.timestamp.date + ' '
+            | #{investment.title}
+        .meta
+          .meta-avatar
+            // a(href='/profile/' + investment.author.id): img(src=investment.author.avatar, alt=investment.author.name, height='48', width='48')
+          span.meta-author
+            i.icon-user
+            // a(href='/profile/#{investment.author.id}')= investment.author.name
+          span.meta-tags
+            i.icon-tags
+            - each tag in investment.tags
+              a(href='/investments?tag=#{tag._id}', title='#{tag.description}')= tag.name
+          span.meta-comment
+            i.icon-comment
+            a(href='/investments/#{investment._id}#comment')= (investment.comments)? investment.comments.length : 0
+          span.meta-visit
+            i.icon-flag
+            a(href='#')= investment.visit_count
+            
+  ul.pagination.pagination-centered
+    li
+      a(href=pagination.link_to + '?page=' + pagination.prev_page) 前页
+    - for(var i = 0; i < pagination.max_pages; i++)
+      li(class=(pagination.current_page == i)? 'active' : '')
+        a(href=pagination.link_to + '?page=' + i)= i + 1
+    li
+      a(href=pagination.link_to + '?page=' + pagination.next_page) 后页
+
+  include ../includes/scripts

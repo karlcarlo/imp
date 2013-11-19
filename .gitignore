@@ -15,3 +15,4 @@ npm-debug.log
 temp/
 *.orig
 .DS_Store
+logs/

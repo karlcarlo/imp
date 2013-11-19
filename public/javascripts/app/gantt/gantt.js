@@ -177,7 +177,7 @@
 					monthsDiv.append($("<div>", {
 						"class": "ganttview-hzheader-month" + (is_current_month ? ' ganttview-hzheader-month-current' : ''),
 						"css": {
-							"width": (w - 1) + "px"
+							"width": w + "px"
 						}
 					}).append(y + '年，' + monthNames[m]));
 					for (var d in dates[y][m]) {

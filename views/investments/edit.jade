@@ -1,0 +1,172 @@
+extends ../layouts/layout
+
+block content
+
+  ol.breadcrumb
+    li
+      a(href="/") 首页
+    li
+      a(href="/investments") 话题
+    li.active
+      | 编辑
+
+  .page-header
+    .pull-right
+      a(href="/investments").btn.btn-info 返回列表
+    h1= title
+      | 
+      small 添加一个新投资
+
+  include ../includes/messages
+
+  form(action="#{form_action}", method="post", enctype="multipart/form-data", role="form").investment-edit.form-vertical
+    .form-group
+      label
+        strong 标题
+      input.form-control(name="title", type="text", value="资金周转_2013-11-11")
+      p.help-block 投资标题
+
+    .form-group
+      label
+        strong 还款类型
+      select.form-control(name="repayment_type")
+        - if(action=="edit" && investment.rate_type == "a" || locals.investment_rate_type == "a")
+          option(value="a", selected="selected") 按月分期还款
+        - else
+          option(value="a") 按月分期还款
+        - if(action=="edit" && investment.rate_type == "b" || locals.investment_rate_type == "b")
+          option(value="b", selected="selected") 按季分期还款
+        - else
+          option(value="b") 按季分期还款
+        - if(action=="edit" && investment.rate_type == "c" || locals.investment_rate_type == "c")
+          option(value="c", selected="selected") 按月到期还款
+        - else
+          option(value="c") 按月到期还款
+        - if(action=="edit" && investment.rate_type == "d" || locals.investment_rate_type == "d")
+          option(value="d", selected="selected") 按天借款
+        - else
+          option(value="d") 按天借款
+        - if(action=="edit" && investment.rate_type == "e" || locals.investment_rate_type == "e")
+          option(value="e", selected="selected") 按天计息按月还款
+        - else
+          option(value="e") 按天计息按月还款
+
+    .form-group
+      label
+        strong 总金额
+      .input-group
+        span.input-group-addon
+          | ￥
+        input.form-control(name="amount", type="text", value="100000")
+        span.input-group-addon
+          | 元
+      p.help-block
+
+    .form-group
+      label
+        strong 利率类型
+      select.form-control(name="rate_type")
+        - if(action=="edit" && investment.rate_type == "year" || locals.investment_rate_type == "year")
+          option(value="year", selected="selected") 年息
+        - else
+          option(value="year") 年息
+        - if(action=="edit" && investment.rate_type == "month" || locals.investment_rate_type == "month")
+          option(value="month", selected="selected") 月息
+        - else
+          option(value="month") 月息
+        - if(action=="edit" && investment.rate_type == "day" || locals.investment_rate_type == "day")
+          option(value="day", selected="selected") 日息
+        - else
+          option(value="day") 日息
+
+    .form-group
+      label
+        strong 利率
+      .input-group
+        input.form-control(name="rate_percent", type="text", value="15")
+        span.input-group-addon
+          | %
+      p.help-block
+
+    .form-group
+      label
+        strong 借款起始日期
+      .input-group
+        input.form-control(name="started_at", type="date", value="2013-11-05")
+      p.help-block
+
+    .form-group
+      label
+        strong 期限类型
+      select.form-control(name="period_type")
+        - if(action=="edit" && investment.period_type == "year" || locals.investment_period_type == "year")
+          option(value="year", selected="selected") 年
+        - else
+          option(value="year") 年
+        - if(action=="edit" && investment.period_type == "month" || locals.investment_period_type == "month")
+          option(value="month", selected="selected") 月
+        - else
+          option(value="month", selected="selected") 月
+        - if(action=="edit" && investment.period_type == "day" || locals.investment_period_type == "day")
+          option(value="day", selected="selected") 日
+        - else
+          option(value="day") 日
+
+    .form-group
+      label
+        strong 期限
+      .input-group
+        input.form-control(name="periods", type="text", value="6")
+        span#period_type_wrapper.input-group-addon
+          | 年
+      p.help-block
+
+
+    .form-group
+      label
+        strong 借款人
+      input.form-control(name="borrower", type="text", value="枫逸")
+      p.help-block
+
+    hr
+
+    .form-group
+      label
+        strong 描述
+      textarea.form-control(name="description", rows="2")
+        - if(action=="edit")
+          | !{investment.description}
+        - else
+          | !{locals.investment_description}测试下哈哈
+      p.help-block 建议使用中文来书写标题，字数控制在5~100个字
+
+    .form-group
+      label
+        strong 权限设置
+      select.form-control(name="permission")
+        - if(action=="edit" && investment.permission == "public" || locals.investment_permission == "public")
+          option(value="public", selected="selected") 公共访问
+        - else
+          option(value="public") 公共访问
+        - if(action=="edit" && investment.permission == "protect" || locals.investment_permission == "protect")
+          option(value="protect", selected="selected") 用户访问
+        - else
+          option(value="protect") 用户访问
+        - if(action=="edit" && investment.permission == "private" || locals.investment_permission == "private")
+          option(value="private", selected="selected") 自己访问
+        - else
+          option(value="private") 自己访问
+    
+    hr
+
+    - if(action=="edit")
+      input(type="hidden", name="investment_id", value="#{investment.id}")
+    button(type="submit").btn.btn-primary
+      - if(action=="new")
+        | 确认提交，发布
+      - else
+        | 确认修改，更新
+  
+  include ../includes/scripts
+  script.
+    require(['/javascripts/page/investment.edit.js']);

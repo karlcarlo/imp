@@ -1,0 +1,65 @@
+/* global */
+body {
+  font-family: "Microsoft Yahei", Helvetica, Arial, sans-serif;
+  color: #444;
+}
+input[type=text],
+input[type=password] {
+  background-color: #fcfcfc;
+}
+textarea {
+  resize: vertical;
+  background-color: #fcfcfc;
+}
+.footer {
+  border-top: 2px solid #eaeaea;
+  margin-top: 40px;
+  padding: 19px 0 20px;
+  background-color: #d6d6d6;
+}
+.footer a,
+.footer a:visited {
+  color: #4183C4;
+}
+.footer p {
+  color: #555;
+}
+.navbar-wrapper {
+  height: 40px;
+  position: relative;
+}
+.paragraph {
+  text-indent: 2em;
+}
+.centered {
+  text-align: center;
+}
+.cell {
+  padding: 20px;
+  margin-bottom: 20px;
+  min-height: 20px;
+}
+.sidebar {
+  background-color: #f9f9f9;
+}
+.sidebar > h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.sidebar > h3 a {
+  color: #444;
+  text-decoration: none;
+}
+.sidebar > p.desc {
+  text-indent: 1em;
+}
+.sidebar .list {
+  margin-bottom: 30px;
+}
+.sidebar .list a {
+  display: block;
+  line-height: 22px;
+  padding-right: 10px;
+  white-space: nowrap;
+  color: #444;
+}

@@ -574,6 +574,10 @@ Date.CultureInfo = {
 			}
 		}) : this._toString();
 	};
+	$P.toYMD = function(separator){
+		separator = separator || '-';
+		return this.toString('yyyy' + separator + 'MM' + separator + 'dd');
+	}
 }());
 (function() {
 	var $D = Date,
