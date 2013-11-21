@@ -131,7 +131,7 @@ function decrypt(str, secret){
 function cut_decimals(num, places){
   places = places || 3;
   var pv = Math.pow(10, places);
-  return Math.round(num * pv)/pv;
+  return Math.round(num * pv) / pv;
 }
 
 function valueof_percent(num){
@@ -165,11 +165,45 @@ function get_ended_at(started_at, periods, period_type){
       break;
   }
 
-  ended_at[action](periods);
+  ended_at[action](periods).addDays(-1);
 
   return ended_at;
 }
 
+function print_ymd(date){
+  var d = new Date(date);
+  return d.toYMD();
+}
+
+function print_bignum(num, bits_size){
+  bits_size = bits_size || 3;
+  var str = num + '',
+    str_arr = str.split('.'),
+    str_int = str_arr[0],
+    str_float = str_arr[1],
+    len = str_int.length,
+    result = '';
+
+  if(len > bits_size){
+    var b = Math.floor(len / bits_size),
+      y = len % bits_size;
+
+    var head = str_int.substr(0, y),
+      body = str_int.substring(y, str_int.length);
+
+    for(var i = 0; i < b; i++){
+      result += body.substring(i * bits_size, (i + 1) * bits_size) + ',';
+    }
+
+    result = (head.length ? head + ',' : '') + result.substring(0, result.length - 1) + (str_float ? '.' + str_float : '');
+
+  }
+  else{
+    result = str_int + (str_float ? '.' + str_float : '');
+  }
+
+  return result;
+}
 
 /**
  * exports
@@ -185,7 +219,8 @@ exports.cut_decimals = cut_decimals;
 exports.valueof_percent = valueof_percent;
 exports.print_percent = print_percent;
 exports.get_ended_at = get_ended_at;
-
+exports.print_ymd = print_ymd;
+exports.print_bignum = print_bignum;
 
 
 

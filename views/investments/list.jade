@@ -10,34 +10,44 @@ block content
 
   include ../includes/messages
 
-  .row-fluid
-    .pull-right
-      - if(locals.member)
-        a(href='/investments/new').btn.btn-info 添加新投资
+  .row
+    .col-md-12
+      .page-header
+        .pull-right
+          a(href='/investments').btn.btn-info 概览
+          | &nbsp;
+          - if(locals.member)
+            a(href='/investments/new').btn.btn-info 添加新投资
+        h1 投资列表
+          | 
+          small
 
-  - each investment in investments
-    .row.list-item
-      .title.clearfix
-        h2
-          a(href='/investments/#{investment._id}')
-            span.date= investment.timestamp.month + '/' + investment.timestamp.date + ' '
-            | #{investment.title}
-        .meta
-          .meta-avatar
-            // a(href='/profile/' + investment.author.id): img(src=investment.author.avatar, alt=investment.author.name, height='48', width='48')
-          span.meta-author
-            i.icon-user
-            // a(href='/profile/#{investment.author.id}')= investment.author.name
-          span.meta-tags
-            i.icon-tags
-            - each tag in investment.tags
-              a(href='/investments?tag=#{tag._id}', title='#{tag.description}')= tag.name
-          span.meta-comment
-            i.icon-comment
-            a(href='/investments/#{investment._id}#comment')= (investment.comments)? investment.comments.length : 0
-          span.meta-visit
-            i.icon-flag
-            a(href='#')= investment.visit_count
+  .row.list-item
+    .col-md-12
+      table.table.table-striped
+        thead
+          tr
+            th 投资标题
+            th 金额
+            th 利率
+            th 还款方式
+            th 期限
+            th 借款人
+            th 操作
+        tbody
+          - each item in investments
+            tr
+              td= item.title
+              td= item.amount_bignum + '元'
+              td= item.rate_smart
+              td= item.repayment_smart
+              td= item.periods_smart
+              td= item.borrower
+              td
+                a(href="/investments/#{item._id}/edit") 编辑
+                | &nbsp;
+                a(href="/investments/#{item._id}/delete") 删除
+
             
   ul.pagination.pagination-centered
     li

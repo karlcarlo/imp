@@ -11,15 +11,23 @@ block content
   include ../includes/messages
 
   .row
-    .pull-right
-      - if(locals.member)
-        a(href='/investments/new').btn.btn-info 添加新投资
+    .col-md-12
+      .page-header
+        .pull-right
+          a(href='/investments/list').btn.btn-info 管理
+          | &nbsp;
+          - if(locals.member)
+            a(href='/investments/new').btn.btn-info 添加新投资
+        h1 投资总览
+          | 
+          small
 
   .row
-    #ganttChart
-    br
-    br
-    #eventMessage
+    .col-md-12
+      #ganttChart
+      br
+      br
+      #eventMessage
 
   include ../includes/scripts
   link(rel="stylesheet", href="/javascripts/lib/jquery-ui-1.8.4.css")
@@ -58,7 +66,7 @@ block content
 
         $("#ganttChart").ganttGrid({ 
           data: investData,
-          slideWidth: 900,
+          slideWidth: 898,
           behavior: {
             onClick: function (data) { 
               var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
