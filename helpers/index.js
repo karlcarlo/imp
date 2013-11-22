@@ -142,6 +142,34 @@ function print_percent(rate){
   return cut_decimals(rate * 100);
 }
 
+function get_started_at(ended_at, periods, period_type){
+  var started_at = new Date(ended_at)
+    , action = '';
+
+  if(typeof periods !== 'number'){
+    return started_at;
+  }
+
+  switch(period_type){
+    case 'year':
+      action = 'addYears';
+      break;
+    case 'month':
+      action = 'addMonths';
+      break;
+    case 'day':
+      action = 'addDays';
+      break;
+    default:
+      action = 'addMonths';
+      break;
+  }
+
+  started_at[action](-periods);
+
+  return started_at;
+}
+
 function get_ended_at(started_at, periods, period_type){
   var ended_at = new Date(started_at)
     , action = '';
@@ -218,6 +246,7 @@ exports.decrypt = decrypt;
 exports.cut_decimals = cut_decimals;
 exports.valueof_percent = valueof_percent;
 exports.print_percent = print_percent;
+exports.get_started_at = get_started_at;
 exports.get_ended_at = get_ended_at;
 exports.print_ymd = print_ymd;
 exports.print_bignum = print_bignum;

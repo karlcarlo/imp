@@ -105,7 +105,7 @@ async.waterfall([
     investment.description = '资金周转演示';
     investment.author = person._id;
     investment.permission = 'public';
-    investment.repayment_type = 'debx';
+    investment.repayment_type = 'a';
     investment.rate = 0.15;
     investment.rate_type = 'year';
     investment.amount = 100000;

@@ -46,7 +46,7 @@ exports.index = function(req, res){
 
     Investment
     .find(null, 'id title started_at ended_at amount repayment_type rate_type rate period_type periods borrower')
-    .sort('-created_at')
+    .sort('-started_at')
     .limit(100)
     .exec(function(err, items){
       res_obj.data = items;
@@ -113,7 +113,7 @@ exports.index = function(req, res){
 
 
     Investment
-    .find(query_obj, null, { sort: '-updated_at' })
+    .find(query_obj, null, { sort: '-started_at' })
     .populate('author')
     // .populate('tags', null, null, { sort: '-sequence -created_at' })
     // .populate('comments')
@@ -187,7 +187,7 @@ exports.list = function(req, res){
 
 
     Investment
-    .find(query_obj, null, { sort: '-updated_at' })
+    .find(query_obj, null, { sort: '-started_at' })
     .populate('author')
     // .populate('tags', null, null, { sort: '-sequence -created_at' })
     // .populate('comments')
@@ -286,9 +286,6 @@ exports.show = function(req, res, next){
 
     Investment.update({ _id: investment._id }, { $set: { visit_count: investment.visit_count } }, function(err){
       
-      // Markdown转HTML
-      investment.content = markdown(investment.content);
-
       res.render('investments/show', { investment: investment });
     });
 
@@ -342,8 +339,8 @@ exports.create = function(req, res, next){
     , periods = parseInt(req.body.periods)
     , period_type = req.body.period_type
     , borrower = req.body.borrower
-    , started_at = req.body.started_at
-    , ended_at = null
+    , started_at = null
+    , ended_at = req.body.ended_at
     , permission = req.body.permission
     // , tag_ids = req.body.tags || [];
 
@@ -371,6 +368,8 @@ exports.create = function(req, res, next){
   //     next(err);
   //   }
     
+  var tags = [];
+
   //   // 验证是否勾选了标签
   //   if(!tag_ids.length){
   //     res.app.locals.messages.push({ type: 'error', content: words.empty_tags });
@@ -396,7 +395,7 @@ exports.create = function(req, res, next){
 
     // 验证标题格式
     try{
-      check(title, '标题为5~50个字。').len(5, 50);
+      check(title, '标题为2~50个字。').len(2, 50);
     }
     catch(error){
       res.app.locals.messages.push({ type: 'error', content: error.message });
@@ -416,8 +415,8 @@ exports.create = function(req, res, next){
     investment.periods = periods;
     investment.period_type = period_type;
     investment.borrower = borrower;
-    investment.started_at = new Date(started_at);
-    investment.ended_at = helpers.get_ended_at(started_at, periods, period_type);
+    investment.started_at = helpers.get_started_at(ended_at, periods, period_type);
+    investment.ended_at = new Date(ended_at);
 
     investment.save(function(err){
       res.app.locals.messages.push({ type: 'success', content: words.success_create });
@@ -512,8 +511,8 @@ exports.update = function(req, res, next){
     , periods = parseInt(req.body.periods)
     , period_type = req.body.period_type
     , borrower = req.body.borrower
-    , started_at = req.body.started_at
-    , ended_at = null
+    , started_at = null
+    , ended_at = req.body.ended_at
     , permission = req.body.permission
     // , tag_ids = req.body.tags || [];
 
@@ -527,7 +526,7 @@ exports.update = function(req, res, next){
   res.locals({
     title: words.edit + words.name,
     action: 'edit',
-    form_action: '/investments/' + investment_id
+    form_action: '/investments/' + investment_id + '/edit'
   });
 
   Investment
@@ -556,8 +555,8 @@ exports.update = function(req, res, next){
       investment.periods = periods;
       investment.period_type = period_type;
       investment.borrower = borrower;
-      investment.started_at = new Date(started_at);
-      investment.ended_at = helpers.get_ended_at(started_at, periods, period_type);
+      investment.started_at = helpers.get_started_at(ended_at, periods, period_type);
+      investment.ended_at = new Date(ended_at);
 
       // // 验证是否勾选了标签
       // if(!tag_ids.length){
@@ -584,7 +583,7 @@ exports.update = function(req, res, next){
 
       // 验证标题格式
       try{
-        check(title, '标题为5~50个字。').len(5, 50);
+        check(title, '标题为2~50个字。').len(2, 50);
       }
       catch(error){
         res.app.locals.messages.push({ type: 'error', content: error.message });

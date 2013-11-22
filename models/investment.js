@@ -37,6 +37,10 @@ InvestmentSchema.virtual('started_at_ymd').get(function(){
   return helper.print_ymd(this.started_at);
 });
 
+InvestmentSchema.virtual('ended_at_ymd').get(function(){
+  return helper.print_ymd(this.ended_at);
+});
+
 InvestmentSchema.virtual('amount_bignum').get(function(){
   return helper.print_bignum(this.amount);
 });

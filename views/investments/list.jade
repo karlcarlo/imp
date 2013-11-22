@@ -32,6 +32,7 @@ block content
             th 利率
             th 还款方式
             th 期限
+            th 还款日期
             th 借款人
             th 操作
         tbody
@@ -42,6 +43,7 @@ block content
               td= item.rate_smart
               td= item.repayment_smart
               td= item.periods_smart
+              td= item.ended_at_ymd
               td= item.borrower
               td
                 a(href="/investments/#{item._id}/edit") 编辑

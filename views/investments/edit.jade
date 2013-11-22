@@ -88,11 +88,19 @@ block content
           | %
       p.help-block
 
+    //
+      .form-group
+        label
+          strong 借款起始日期
+        .input-group
+          input.form-control(name="started_at", type="date", value=investment.started_at_ymd || locals.investment_started_at_ymd)
+        p.help-block
+
     .form-group
       label
-        strong 借款起始日期
+        strong 还款日期
       .input-group
-        input.form-control(name="started_at", type="date", value=investment.started_at_ymd || locals.investment_started_at_ymd)
+        input.form-control(name="ended_at", type="date", value=investment.ended_at_ymd || locals.investment_ended_at_ymd)
       p.help-block
 
     .form-group
