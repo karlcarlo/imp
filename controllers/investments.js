@@ -45,7 +45,7 @@ exports.index = function(req, res){
     };
 
     Investment
-    .find(null, 'id title started_at ended_at amount repayment_type rate_type rate period_type periods borrower')
+    .find()
     .sort('-started_at')
     .limit(100)
     .exec(function(err, items){

@@ -233,6 +233,115 @@ function print_bignum(num, bits_size){
   return result;
 }
 
+
+// 等额本息
+function acpi(amount, rate_year, months_num){
+  if(!amount || !rate_year || !months_num){
+    return -1;
+  }
+
+  var rate_month = rate_year / 12,
+    v = Math.pow(1 + rate_month, months_num),
+    result = amount * rate_month * v / (v - 1);
+
+  return result;
+}
+
+/**
+ * 按等额本息计算贷款
+ * @param  {Number} amount      金额
+ * @param  {Number} rate        利率
+ * @param  {Number} periods     周期
+ * @param  {String} rate_type   利率类型[year | month | day], 默认为year(年)
+ * @param  {String} period_type 周期类型[year | month | day], 默认为month(月)
+ * @return {Object}             [description]
+ */
+function loan(amount, rate, periods, rate_type, period_type){
+
+  if(!amount || !rate || !periods){
+    return;
+  }
+
+  rate_type = rate_type || 'year';
+  period_type = period_type || 'month';
+
+  var rate_year = 0,
+      periods_of_month = 0,
+      repayment = 0
+      interest_total = 0,
+      interest_tax = 0,
+      interest_month = 0,
+      interest_day = 0,
+      principal_interest = 0,
+      tax = 0.1;
+
+  switch(rate_type){
+    case 'year':
+      rate_year = rate;
+      break;
+    case 'month':
+      rate_year = rate * 12;
+      break;
+    case 'day':
+      rate_year = rate * 365;
+      break;
+    default:
+      rate_year = rate;
+      break;
+  }
+
+  switch(period_type){
+    case 'year':
+      periods_of_month = periods * 12;
+      break;
+    case 'month':
+      periods_of_month = periods;
+      break;
+    case 'day':
+      periods_of_month = periods / (365 / 12);
+      break;
+    default:
+      periods_of_month = periods;
+      break;
+  }
+
+  if(period_type === 'day'){
+    interest_total = interest_tax = amount * rate * periods;
+    interest_month = interest_tax / periods_of_month;
+    interest_day = interest_tax / periods;
+    repayment = principal_interest = amount + interest_tax;
+  }
+  else{
+    // 月还款额
+    repayment = acpi(amount, rate_year, periods_of_month);
+    // 利息总额
+    interest_total = repayment * periods_of_month - amount,
+    interest_tax = interest_total * (1 - tax);
+    // 按月利息
+    interest_month = interest_tax / periods_of_month,
+    // 按天利息
+    interest_day = interest_month / (365 / 12),
+    // 本息总额
+    principal_interest = amount + interest_tax;    
+  }
+
+
+  return {
+    repayment: cut_decimals(repayment),
+    rate_of_year: cut_decimals(rate_year, 4),
+    periods_of_month: cut_decimals(periods_of_month),
+    interests: cut_decimals(interest_total),
+    interests_after_tax: cut_decimals(interest_tax),
+    interests_per_month: cut_decimals(interest_month),
+    interests_per_day: cut_decimals(interest_day),
+    principal_interest: cut_decimals(principal_interest),
+    valueOf: function(){
+      return this.repayment;
+    }
+  }
+
+}
+
 /**
  * exports
  */
@@ -250,7 +359,7 @@ exports.get_started_at = get_started_at;
 exports.get_ended_at = get_ended_at;
 exports.print_ymd = print_ymd;
 exports.print_bignum = print_bignum;
-
+exports.loan = loan;
 
 
 

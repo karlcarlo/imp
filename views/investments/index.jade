@@ -47,7 +47,7 @@ block content
         json.data.forEach(function(obj, i){
           var tmp = {
             id: obj._id,
-            name: obj.title,
+            name: '向 ' + obj.borrower + ' 投资了 ' + obj.amount + '元',
             start: new Date(obj.started_at).toYMD(),
             end: new Date(obj.ended_at).toYMD(),
             type: obj.repayment_type,

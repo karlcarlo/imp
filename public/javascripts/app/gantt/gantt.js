@@ -132,7 +132,7 @@
 					"css": {
 						"height": cellHeight + "px"
 					}
-				}).append(data[i].borrower));
+				}).append(data[i].name));
 
 				// var seriesDiv = $("<div>", {
 				// 	"class": "ganttview-vtheader-series"
